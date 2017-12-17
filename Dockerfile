@@ -18,8 +18,6 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     apt-get update && apt-get install -y google-cloud-sdk
 
-WORKDIR /tmp
-
 # Add google cloud storage credentials
 COPY google_credentials.json /opt/
 
@@ -27,6 +25,7 @@ COPY google_credentials.json /opt/
 COPY run.sh /
 
 # Finish tendermint install
+WORKDIR /tmp
 RUN unzip /tmp/ethermint.zip
 RUN mv ethermint /usr/local/bin/
 
