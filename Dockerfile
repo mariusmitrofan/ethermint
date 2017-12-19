@@ -24,7 +24,7 @@ ENV FUSE_MOUNT_DIR=/mount
 ADD https://github.com/tendermint/ethermint/releases/download/v${ETHERMINT_VERSION}/ethermint_${ETHERMINT_VERSION}_linux-amd64.zip /tmp/ethermint.zip
 
 # Add tendermint app
-ADD https://github.com/tendermint/tendermint/releases/download/v${VERSION}/tendermint_${VERSION}_linux_amd64.zip /tmp/tendermint.zip
+ADD https://github.com/tendermint/tendermint/releases/download/v${TENDERMINT_VERSION}/tendermint_${TENDERMINT_VERSION}_linux_amd64.zip /tmp/tendermint.zip
 
 # Add script to mount google cloud storage bucket
 COPY run.sh /
