@@ -1,9 +1,7 @@
 FROM golang:1.9.2
 
-ARG VERSION=0.5.3
-
-# Add ethermint app
-ADD https://github.com/tendermint/ethermint/releases/download/v${VERSION}/ethermint_${VERSION}_linux-amd64.zip /tmp/ethermint.zip
+ARG ETHERMINT_VERSION=0.5.3
+ARG TENDERMINT_VERSION=0.14.0
 
 # Install pre-requisites
 RUN apt-get update && apt-get install -y zip unzip curl apt-transport-https
@@ -19,15 +17,22 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee
     apt-get update && apt-get install -y google-cloud-sdk
 
 # Add google cloud storage credentials
-COPY google_credentials.json /opt/
+ENV GOOGLE_APPLICATION_CREDENTIALS=/opt/google_credentials.json
+ENV FUSE_MOUNT_DIR=/mount
+
+# Add ethermint app
+ADD https://github.com/tendermint/ethermint/releases/download/v${ETHERMINT_VERSION}/ethermint_${ETHERMINT_VERSION}_linux-amd64.zip /tmp/ethermint.zip
+
+# Add tendermint app
+ADD https://github.com/tendermint/tendermint/releases/download/v${VERSION}/tendermint_${VERSION}_linux_amd64.zip /tmp/tendermint.zip
 
 # Add script to mount google cloud storage bucket
 COPY run.sh /
 
-# Finish tendermint install
+# Finish ethermint+tendermint install
 WORKDIR /tmp
-RUN unzip /tmp/ethermint.zip
-RUN mv ethermint /usr/local/bin/
+RUN unzip /tmp/ethermint.zip && mv ethermint /usr/local/bin/ && \
+    unzip /tmp/tendermint.zip && mv tendermint /usr/local/bin/
 
 ENTRYPOINT ["/run.sh"]
 CMD ["ethermint"]
