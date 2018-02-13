@@ -22,6 +22,13 @@ RUN unzip /tmp/ethermint.zip && mv ethermint /usr/local/bin/ && \
     unzip /tmp/tendermint.zip && mv tendermint /usr/local/bin/ && \
     unzip /tmp/geth.zip && cd go-ethereum-${GETH_VERSION} && make geth && mv /tmp/go-ethereum-${GETH_VERSION}/build/bin/geth /usr/local/bin/
 
+# Install eth-net-intelligence-api
+WORKDIR /
+RUN git clone https://github.com/cubedro/eth-net-intelligence-api && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get update &&    apt-get install -y nodejs && \
+    npm install && npm install -g pm2
+
 EXPOSE 46656 46657 8545 8546 30303 30303/udp 30301/udp
 
 CMD ["ethermint"]
