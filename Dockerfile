@@ -27,6 +27,7 @@ WORKDIR /
 RUN git clone https://github.com/cubedro/eth-net-intelligence-api && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get update &&    apt-get install -y nodejs && \
+    cd /eth-net-intelligence-api && \
     npm install && npm install -g pm2
 
 EXPOSE 46656 46657 8545 8546 30303 30303/udp 30301/udp
